@@ -13,7 +13,7 @@ CLI tool to create Pull Requests on GitHub.
 ### Quick Start
 -------
 ```shell
-npm install -g ghpr
+npm install -g @codesherpas/ghpr
 ```
 
 Create a configuration file .ghpr.json in the root of your project.
