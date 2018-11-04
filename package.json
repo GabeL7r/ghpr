@@ -1,6 +1,6 @@
 {
   "name": "@codesherpas/ghpr",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "url": "https://github.com/CodeSherpas/ghpr"
   },
   "bugs": {
-   "url":  "https://github.com/CodeSherpas/ghpr/issues" 
+    "url": "https://github.com/CodeSherpas/ghpr/issues"
   },
   "homepage": "https://codesherpas.github.io/ghpr/#/"
 }
