@@ -16,6 +16,12 @@ CLI tool to create Pull Requests on GitHub.
 npm install -g @codesherpas/ghpr
 ```
 
+Create a [GitHub Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) and add it to your Git Config
+
+```shell
+git config --global github.token <token>
+```
+
 Create a configuration file .ghpr.json in the root of your project.
 
 ```json
@@ -56,7 +62,4 @@ Create a pull request.
 ```shell
 ghpr
 ```
-
-You will be prompted for template variables which require user input.  Template variables which are a result of an executed command will automaticall by included in the pull request body so you don't have to copy and paste them.
-
 
