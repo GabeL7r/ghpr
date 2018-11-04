@@ -1,15 +1,15 @@
 {
-	"templateVariables": {
-		"userInputs": {
-			"why": {
-				"message": "Why is this change needed: "
-			},
-			"ticketNumber": {
-				"message": "Jira ticket number: "
-			}
-		},
-		"commands": {
-			"what": "git status"
-		}
-	}
+  "templateVariables": {
+    "commands": {
+      "what": "git status"
+    },
+    "userInputs": {
+      "ticketNumber": {
+        "message": "Jira ticket number: "
+      },
+      "why": {
+        "message": "Why is this change needed: "
+      }
+    }
+  }
 }
