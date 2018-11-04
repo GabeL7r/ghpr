@@ -32,7 +32,7 @@ const config = convict({
   }
 });
 
-config.loadFile(`${getRootLevel()}/.pr_maker.json`);
+config.loadFile(`${getRootLevel()}/.ghpr.json`);
 config.validate({ allowed: "strict" });
 
 
