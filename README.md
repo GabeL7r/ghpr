@@ -60,3 +60,4 @@ ghpr
 You will be prompted for template variables which require user input.  Template variables which are a result of an executed command will automaticall by included in the pull request body so you don't have to copy and paste them.
 
 
+test
