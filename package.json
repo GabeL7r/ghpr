@@ -21,5 +21,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/CodeSherpas/ghpr"
-  }
+  },
+  "bugs": {
+   "url":  "https://github.com/CodeSherpas/ghpr/issues" 
+  },
+  "homepage": "https://codesherpas.github.io/ghpr/#/"
 }
