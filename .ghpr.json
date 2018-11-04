@@ -9,7 +9,7 @@
 			}
 		},
 		"commands": {
-			"what": "git status"
+			"testCoverage": "npm test"
 		}
 	}
 }
