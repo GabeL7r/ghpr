@@ -15,7 +15,14 @@
   },
   "description": "CLI Tool to Create Pull Requests on GitHub",
   "homepage": "https://codesherpas.github.io/ghpr/#/",
-  "keywords": ["github", "cli", "pullrequest", "pull-requests", "pull-request", "git"],
+  "keywords": [
+    "github",
+    "cli",
+    "pullrequest",
+    "pull-requests",
+    "pull-request",
+    "git"
+  ],
   "license": "ISC",
   "main": "index.js",
   "name": "@codesherpas/ghpr",

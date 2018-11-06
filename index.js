@@ -211,11 +211,13 @@ async function renderBody() {
     } catch (e) {
         debuglog('Could not render template: ', e);
 
-        return inquirer.prompt({
-            type: 'input',
-            name: 'body',
-            message: 'Enter Pull Request Body: ',
-        }).then(r => r.body);
+        return inquirer
+            .prompt({
+                type: 'input',
+                name: 'body',
+                message: 'Enter Pull Request Body: ',
+            })
+            .then(r => r.body);
     }
 }
 
