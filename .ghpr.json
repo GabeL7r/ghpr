@@ -1,15 +1,15 @@
 {
-	"templateVariables": {
-		"userInputs": {
-			"why": {
-				"message": "Why is this change needed: "
-			},
-			"ticketNumber": {
-				"message": "Jira ticket number: "
-			}
-		},
-		"commands": {
-			"testCoverage": "npm test"
-		}
-	}
+  "templateVariables": {
+    "commands": {
+      "testCoverage": "npm test"
+    },
+    "userInputs": {
+      "ticketNumber": {
+        "message": "Jira ticket number: "
+      },
+      "why": {
+        "message": "Why is this change needed: "
+      }
+    }
+  }
 }

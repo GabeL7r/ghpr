@@ -1,16 +1,11 @@
 {
-  "name": "@codesherpas/ghpr",
-  "version": "1.0.5",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\""
-  },
   "author": "",
   "bin": {
     "ghpr": "./index.js"
   },
-  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CodeSherpas/ghpr/issues"
+  },
   "dependencies": {
     "bluebird": "^3.5.2",
     "convict": "^4.4.0",
@@ -18,12 +13,20 @@
     "octonode": "^0.9.5",
     "shelljs": "^0.8.2"
   },
+  "description": "",
+  "directories": {
+    "doc": "docs"
+  },
+  "homepage": "https://codesherpas.github.io/ghpr/#/",
+  "license": "ISC",
+  "main": "index.js",
+  "name": "@codesherpas/ghpr",
   "repository": {
     "type": "git",
     "url": "https://github.com/CodeSherpas/ghpr"
   },
-  "bugs": {
-    "url": "https://github.com/CodeSherpas/ghpr/issues"
+  "scripts": {
+    "test": "echo \"Error: no test specified\""
   },
-  "homepage": "https://codesherpas.github.io/ghpr/#/"
+  "version": "1.0.6"
 }
