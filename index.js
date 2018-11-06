@@ -211,11 +211,11 @@ async function renderBody() {
     } catch (e) {
         debuglog('Could not render template: ', e);
 
-        return await inquirer.prompt({
+        return inquirer.prompt({
             type: 'input',
             name: 'body',
             message: 'Enter Pull Request Body: ',
-        }).body
+        }).then(r => r.body)
     }
 }
 

@@ -1,5 +1,5 @@
 {
-  "author": "",
+  "author": "Gabe Levasseur <gabe@codesherpas.io> (https://codesherpas.io/#/)",
   "bin": {
     "ghpr": "./index.js"
   },
@@ -13,11 +13,9 @@
     "octonode": "^0.9.5",
     "shelljs": "^0.8.2"
   },
-  "description": "",
-  "directories": {
-    "doc": "docs"
-  },
+  "description": "CLI Tool to Create Pull Requests on GitHub",
   "homepage": "https://codesherpas.github.io/ghpr/#/",
+  "keywords": ["github", "cli", "pullrequest", "pull-requests", "pull-request", "git"],
   "license": "ISC",
   "main": "index.js",
   "name": "@codesherpas/ghpr",
