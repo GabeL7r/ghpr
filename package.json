@@ -2,6 +2,9 @@
   "name": "@codesherpas/ghpr",
   "version": "1.0.6",
   "description": "",
+  "directories": {
+    "doc": "docs"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\""
