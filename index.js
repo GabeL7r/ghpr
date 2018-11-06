@@ -35,8 +35,8 @@ const config = convict({
 try {
     config.loadFile(`${getRootLevel()}/.ghpr.json`);
     config.validate({ allowed: 'strict' });
-} catch(e) {
-    debuglog('Could not load config file.')
+} catch (e) {
+    debuglog('Could not load config file.');
 }
 
 const prompts = {
@@ -215,7 +215,7 @@ async function renderBody() {
             type: 'input',
             name: 'body',
             message: 'Enter Pull Request Body: ',
-        }).body
+        }).body;
     }
 }
 
