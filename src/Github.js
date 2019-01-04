@@ -1,4 +1,4 @@
-require("@babel/polyfill");
+require('@babel/polyfill');
 const https = require('https');
 const util = require('util');
 const debug = util.debuglog('github');
@@ -39,12 +39,12 @@ class Github {
             });
 
             if (pr.message === 'Validation Failed') {
-                console.log(pr.errors[0].message)
-                process.exit(1)
+                console.log(pr.errors[0].message);
+                process.exit(1);
             }
-            return pr.number
+            return pr.number;
         } catch (e) {
-            console.log(e)
+            console.log(e);
             if (e.body.errors[0].message.includes('A pull request already exists')) {
                 console.log(`A pull request already exists for ${head} -> ${base} in ${owner}/${repoName}`);
             } else {
@@ -61,7 +61,6 @@ class Github {
         try {
             const path = `/repos/${this._owner}/${this._repo}/issues/${issueNumber}/labels`;
             await this._request('POST', path, labels);
-
         } catch (e) {
             debug("Couldn't add labels to pr.", e);
             return [];
