@@ -1,7 +1,7 @@
 {
-    "userInputs": {
-      "why": {
-        "message": "Why is this change needed: "
-      }
+  "userInputs": {
+    "why": {
+      "message": "Why is this change needed: "
     }
+  }
 }
