@@ -86,7 +86,6 @@ async function main() {
 
     const prNumber = await githubClient.createPr({ title, base, head, body });
     if (selectedLabels.length > 0) {
-        console.log(prNumber);
         debuglog('Adding labels to Pull Request...');
         await githubClient.addLabel(prNumber, selectedLabels);
     }

@@ -1,7 +1,7 @@
 {
   "author": "Gabe Levasseur <gabe@codesherpas.io> (https://codesherpas.io/#/)",
   "bin": {
-    "ghpr": "./index.js"
+    "ghpr": "./dist/index.js"
   },
   "bugs": {
     "url": "https://github.com/CodeSherpas/ghpr/issues"
@@ -29,7 +29,7 @@
   },
   "scripts": {
     "prettier": "prettier --write index.js src/*.js",
-	"postinstall": "babel src -d dist",
+    "postinstall": "babel src -d dist",
     "test": "echo \"Error: no test specified\"",
     "test:watch": "jest --watchAll"
   },
