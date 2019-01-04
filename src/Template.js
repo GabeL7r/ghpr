@@ -14,8 +14,8 @@ class Template {
 
     async _userInput() {
         const { userInputs } = this._config;
-		
-		if (!userInputs) return;
+
+        if (!userInputs) return;
 
         const keys = Object.keys(userInputs);
         for (let ii = 0; ii < keys.length; ii++) {
@@ -30,7 +30,7 @@ class Template {
     async _commands() {
         const { commands } = this._config;
 
-		if (!commands) return;
+        if (!commands) return;
 
         const keys = Object.keys(commands);
         for (let ii = 0; ii < keys.length; ii++) {
