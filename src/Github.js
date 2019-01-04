@@ -80,7 +80,6 @@ class Github {
                         data += chunk;
                     });
                     resp.on('end', () => {
-                        console.log(data);
                         resolve(JSON.parse(data));
                     });
                 })
