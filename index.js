@@ -4,7 +4,8 @@ const fs = require('fs');
 const shell = require('./src/Shell.js');
 const util = require('util');
 const Github = require('./src/Github.js');
-const { prompt, MultiSelect } = require('enquirer');
+const Template = require('./src/Template.js');
+const { prompt, MultiSelect, Select } = require('enquirer');
 
 const debuglog = util.debuglog('ghpr');
 
@@ -46,8 +47,9 @@ async function main() {
                     return true;
                 },
             };
-        },
+        }
     };
+
     debuglog('Prompting user for title...');
     const { title } = await prompt(prompts.title);
     debuglog('Title: ', title);
@@ -68,6 +70,21 @@ async function main() {
     }).run();
     debuglog('Labels: ', labels);
 
+    debuglog('Prompting user template...');
+    const templates = await shell.exec('ls $(git rev-parse --show-toplevel)/.github')
+    const { templatePath } = await new Select({
+        message: 'Select Template: ',
+        name: 'template',
+        choices: templates.split('\n')
+    
+    }).run();
+    debuglog('Template: ', templatePath);
+
+
+    const rootDir = await shell.exec('git rev-parse --show-toplevel');
+    const template = new Template(templatePath, rootDir)
+
+    console.log(await template.render())
     /*
     debuglog('Beggining render of template...');
     const body = await renderBody();

@@ -7,8 +7,8 @@ class Shell {
         try {
             let { stdout, stderr } = await exec(command, { maxBuffer: 1024 * 2000 });
 
-            debug('stdout: ', stdout)
-            debug('stderr: ', stderr)
+            debug('stdout: ', stdout);
+            debug('stderr: ', stderr);
             if (stderr) throw stderr;
 
             return stdout.trim();

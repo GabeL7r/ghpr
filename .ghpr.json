@@ -1,5 +1,4 @@
 {
-  "templateVariables": {
     "commands": {
       "testCoverage": "npm test"
     },
@@ -11,5 +10,4 @@
         "message": "Why is this change needed: "
       }
     }
-  }
 }

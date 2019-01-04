@@ -27,7 +27,9 @@
     "url": "https://github.com/CodeSherpas/ghpr"
   },
   "scripts": {
-    "test": "jest --watchAll"
+    "prettier": "prettier --write index.js src/*.js",
+    "test": "echo \"Error: no test specified\"",
+    "test:watch": "jest --watchAll"
   },
   "version": "1.0.7",
   "devDependencies": {

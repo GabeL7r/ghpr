@@ -2,7 +2,6 @@ const https = require('https');
 const util = require('util');
 const debug = util.debuglog('github');
 
-   
 class Github {
     constructor(token, owner, repo) {
         this._token = token;
@@ -12,7 +11,7 @@ class Github {
     async getLabels() {
         debug('Getting labels associated with this project on GitHub...');
         try {
-            const path = `/repos/${this._owner}/${this._repo}/labels`
+            const path = `/repos/${this._owner}/${this._repo}/labels`;
             const labels = await this._request('GET', path);
 
             const formattedLabels = labels.map(l => {
@@ -27,36 +26,35 @@ class Github {
         }
     }
 
-
     async createPr() {
-            debuglog('Creating pull request...');
+        debuglog('Creating pull request...');
         try {
-        const r = await client.repo(`${owner}/${repoName}`).prAsync({
-            title,
-            base,
-            head,
-            body,
-        });
-   } catch (e) {
-        if (e.body.errors[0].message.includes('A pull request already exists')) {
-            console.log(`A pull request already exists for ${head} -> ${base} in ${owner}/${repoName}`);
-        } else {
-            console.log('Unable to create pull request.  Try running application with NODE_DEBUG=ghpr to troubleshoot');
-            debuglog(JSON.stringify(e));
+            const r = await client.repo(`${owner}/${repoName}`).prAsync({
+                title,
+                base,
+                head,
+                body,
+            });
+        } catch (e) {
+            if (e.body.errors[0].message.includes('A pull request already exists')) {
+                console.log(`A pull request already exists for ${head} -> ${base} in ${owner}/${repoName}`);
+            } else {
+                console.log(
+                    'Unable to create pull request.  Try running application with NODE_DEBUG=ghpr to troubleshoot'
+                );
+                debuglog(JSON.stringify(e));
+            }
         }
     }
 
-    }
-
     async addLabel() {
-           const issueNumber = r[0].number;
+        const issueNumber = r[0].number;
         debuglog(`Pull Request ${issueNumber} created.`);
 
         if (labels.length > 0) {
             debuglog('Adding labels to Pull Request...');
             await client.issue(`${owner}/${repoName}`, issueNumber).addLabelsAsync(labels);
         }
- 
     }
     _request(method, path, postData) {
         const options = {
@@ -92,5 +90,5 @@ class Github {
             req.end();
         });
     }
-};
-module.exports = Github
+}
+module.exports = Github;

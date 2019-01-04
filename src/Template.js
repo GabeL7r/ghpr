@@ -1,46 +1,51 @@
-function getRootLevel() {
-    return shell.exec('git rev-parse --show-toplevel').stdout.trim();
-}
+const fs = require('fs');
+const path = require('path');
+const { prompt, MultiSelect, Select } = require('enquirer');
+const shell = require('./Shell.js');
 
-async function renderBody() {
-    try {
-        let body = fs.readFileSync(`${getRootLevel()}/.github/pull_request_template.md`, 'utf8');
+class Template {
+    constructor(filePath, rootDir) {
+        this._filePath = filePath;
+        this._rootDir = rootDir;
+        this._config = require(`${rootDir}/.ghpr.json`);
+        this._body = fs.readFileSync(`${rootDir}/.github/pull_request_template.md`, 'utf8');
+    }
 
-        const userInputs = config.get('templateVariables.userInputs');
-        const commands = config.get('templateVariables.commands');
-        return Promise.each(Object.keys(userInputs), key => {
-            return inquirer
-                .prompt({
-                    type: 'input',
-                    name: key,
-                    default: userInputs[key].default || '',
-                    message: userInputs[key].message,
-                    validate: function(text) {
-                        if (text.length < 0) {
-                            return `Value cannot be empty`;
-                        }
-                        return true;
-                    },
-                })
-                .then(r => {
-                    body = body.replace(`{{${key}}}`, r[key]);
-                });
-        })
-            .then(() => {
-                return Promise.each(Object.keys(commands), c => {
-                    body = body.replace(`{{${c}}}`, shell.exec(commands[c]).stdout.trim());
-                });
-            })
-            .then(() => body);
-    } catch (e) {
-        debuglog('Could not render template: ', e);
+    async _userInput() {
 
-        return inquirer
-            .prompt({
-                type: 'input',
-                name: 'body',
-                message: 'Enter Pull Request Body: ',
-            })
-            .then(r => r.body);
+        const { userInputs } = this._config;
+
+        const keys = Object.keys(userInputs);
+        for (let ii = 0; ii < keys.length; ii++) {
+            const question = Object.assign(userInputs[keys[ii]], {type: 'input', name: 'value'})
+
+            const {value} = await prompt(question)
+
+            console.log(keys[ii])
+            this._body = this._body.replace(`{{${keys[ii]}}}`, value)
+        }
+    }
+
+    async _commands() {
+        const { commands } = this._config;
+
+        const keys = Object.keys(commands);
+        for (let ii = 0; ii < keys.length; ii++) {
+            console.log(commands[keys[ii]])
+            try {
+                const value = await shell.exec(commands[keys[ii]]);
+                this._body = this._body.replace(`{{${keys[ii]}}}`, value)
+            }catch(e) {
+                console.error(e)
+            }
+        }
+    }
+    async render() {
+        await this._userInput();
+        await this._commands();
+
+        return this._body;
     }
 }
+
+module.exports = Template;
