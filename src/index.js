@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+require('@babel/polyfill');
 const shell = require('./Shell.js');
 const util = require('util');
 const Github = require('./Github.js');
