@@ -12,6 +12,7 @@ const debuglog = util.debuglog('ghpr');
 main();
 
 async function main() {
+    await validateInGitRepo();
     const githubClient = await createGithubClient();
 
     const ghpr = new GHPR(githubClient);
@@ -27,7 +28,6 @@ class GHPR {
     }
 
     async build() {
-        await validateInGitRepo();
         await this._getTitle();
         await this._getBase();
         await this._getHead();
