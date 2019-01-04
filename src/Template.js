@@ -9,7 +9,7 @@ class Template {
         this._filePath = filePath;
         this._rootDir = rootDir;
         this._config = require(`${rootDir}/.ghpr.json`);
-        this._body = fs.readFileSync(`${rootDir}/.github/pull_request_template.md`, 'utf8');
+        this._body = fs.readFileSync(`${rootDir}/.github/${filePath}`, 'utf8');
     }
 
     async _userInput() {

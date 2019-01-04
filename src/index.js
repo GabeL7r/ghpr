@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
 const shell = require('./Shell.js');
 const util = require('util');
 const Github = require('./Github.js');
@@ -9,85 +8,124 @@ const { prompt, MultiSelect, Select } = require('enquirer');
 
 const debuglog = util.debuglog('ghpr');
 
+main();
+
 async function main() {
-    await validateInGitRepo();
     const githubClient = await createGithubClient();
 
-    const labels = await githubClient.getLabels();
+    const ghpr = new GHPR(githubClient);
 
-    const prompts = {
-        title: {
-            type: 'input',
-            name: 'title',
-            message: 'Pull Request Title: ',
-            validate: function(text) {
-                if (text.length < 0) {
-                    return 'Must include a title.';
-                }
-                return true;
-            },
-        },
-        base: {
-            type: 'input',
-            name: 'base',
-            default: 'master',
-            message: 'Base Branch: ',
-        },
-        head: async function(base) {
-            return {
+    await ghpr.build()
+    await ghpr.create()
+    await ghpr.addLabels();
+}
+
+class GHPR {
+    constructor(githubClient) {
+        this._githubClient = githubClient;
+    }
+
+    async build() {
+        await validateInGitRepo();
+        await this._getTitle();
+        await this._getBase();
+        await this._getHead();
+        await this._getLabels();
+        await this._getTemplatePath();
+        this._rootDir =  await shell.exec('git rev-parse --show-toplevel');
+        this._template = new Template(this._templatePath, this._rootDir);
+        await this._getBody();
+    }
+
+    async create() {
+        const { _title: title, _base: base, _head: head, _body: body } = this;
+
+        this._prNumber = await this._githubClient.createPr({ title, base, head, body });
+    }
+
+    async addLabels() {
+        if (this._selectedLabels.length > 0) {
+            debuglog('Adding labels to Pull Request...');
+            await this._githubClient.addLabel(this._prNumber, this._selectedLabels);
+        }
+    }
+
+    async _getBase() {
+        const { base } = await prompt({
                 type: 'input',
-                name: 'head',
-                default: await shell.exec('git rev-parse --abbrev-ref HEAD'),
-                message: 'Head Branch: ',
-                validate: function(text) {
-                    if (base === text) {
-                        return 'Base and Head branch must be different.';
-                    }
+                name: 'base',
+                default: 'master',
+                message: 'Base Branch: ',
+            })
+        debuglog('Base: ', base);
 
+        return this._base = base;
+    }
+
+    async _getHead() {
+        const { head } = await prompt(async function() {
+                return {
+                    type: 'input',
+                    name: 'head',
+                    default: await shell.exec('git rev-parse --abbrev-ref HEAD'),
+                    message: 'Head Branch: ',
+                    validate: function(text) {
+                        if (this._base === text) {
+                            return 'Base and Head branch must be different.';
+                        }
+
+                        return true;
+                    },
+                };
+            })
+        debuglog('Head: ', head);
+
+        return this._head = head;
+    }
+
+    async _getTemplatePath() {
+        const templates = await shell.exec('ls $(git rev-parse --show-toplevel)/.github');
+        const templatePath = await new Select({
+            message: 'Select Template: ',
+            name: 'template',
+            choices: templates.split('\n'),
+        }).run();
+        debuglog('Template: ', templatePath);
+
+        return this._templatePath = templatePath
+    }
+
+    async _getLabels() {
+        const labels = await this._githubClient.getLabels();
+        const selectedLabels = await new MultiSelect({
+            message: 'Select Labels: ',
+            name: 'selectedLabels',
+            choices: labels,
+        }).run();
+        debuglog('Selected Labels: ', selectedLabels);
+
+        this._selectedLabels = selectedLabels
+    }
+
+    async _getTitle() {
+        const { title } = await prompt({
+                type: 'input',
+                name: 'title',
+                message: 'Pull Request Title: ',
+                validate: function(text) {
+                    if (text.length < 0) {
+                        return 'Must include a title.';
+                    }
                     return true;
                 },
-            };
-        },
-    };
+            })
+        debuglog('Title: ', title);
 
-    debuglog('Prompting user for title...');
-    const { title } = await prompt(prompts.title);
-    debuglog('Title: ', title);
+        this._title = title;
+    }
 
-    debuglog('Prompting user for base...');
-    const { base } = await prompt(prompts.base);
-    debuglog('Base: ', base);
-
-    debuglog('Prompting user for head...');
-    const { head } = await prompt(await prompts.head(base));
-    debuglog('Head: ', head);
-
-    debuglog('Prompting user for labels...');
-    const selectedLabels = await new MultiSelect({
-        message: 'Select Labels: ',
-        name: 'selectedLabels',
-        choices: labels,
-    }).run();
-    debuglog('Selected Labels: ', selectedLabels);
-
-    debuglog('Prompting user template...');
-    const templates = await shell.exec('ls $(git rev-parse --show-toplevel)/.github');
-    const { templatePath } = await new Select({
-        message: 'Select Template: ',
-        name: 'template',
-        choices: templates.split('\n'),
-    }).run();
-    debuglog('Template: ', templatePath);
-
-    const rootDir = await shell.exec('git rev-parse --show-toplevel');
-    const template = new Template(templatePath, rootDir);
-
-    const body = await template.render();
-
-    const prNumber = await githubClient.createPr({ title, base, head, body });
-    if (selectedLabels.length > 0) {
-        debuglog('Adding labels to Pull Request...');
-        await githubClient.addLabel(prNumber, selectedLabels);
+    async _getBody() {
+        return await this._template.render();
     }
 }
 
@@ -143,4 +181,3 @@ async function getGithubRemoteInfo() {
     };
 }
 
-main();
