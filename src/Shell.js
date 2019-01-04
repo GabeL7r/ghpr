@@ -10,7 +10,7 @@ class Shell {
 
             debug('stdout: ', stdout);
             debug('stderr: ', stderr);
-            if (stderr) throw stderr;
+            return stdout.trim() || stderr.trim()
 
             return stdout.trim();
         } catch (e) {

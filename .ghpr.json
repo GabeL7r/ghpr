@@ -1,4 +1,8 @@
 {
+  "commands": {
+	"testCoverage":"npm run test:cover",
+    "complexity": "cr -f markdown src"
+  },
   "userInputs": {
     "why": {
       "message": "Why is this change needed: "

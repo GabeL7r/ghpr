@@ -9,6 +9,7 @@ class Github {
         this._owner = owner;
         this._repo = repo;
     }
+
     async getLabels() {
         debug('Getting labels associated with this project on GitHub...');
         try {
@@ -49,7 +50,6 @@ class Github {
 				'Unable to create pull request.  Try running application with NODE_DEBUG=ghpr to troubleshoot'
 			);
 			debug(JSON.stringify(e));
-            }
         }
     }
 
