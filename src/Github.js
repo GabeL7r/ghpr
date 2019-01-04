@@ -45,13 +45,10 @@ class Github {
             return pr.number;
         } catch (e) {
             console.log(e);
-            if (e.body.errors[0].message.includes('A pull request already exists')) {
-                console.log(`A pull request already exists for ${head} -> ${base} in ${owner}/${repoName}`);
-            } else {
-                console.log(
-                    'Unable to create pull request.  Try running application with NODE_DEBUG=ghpr to troubleshoot'
-                );
-                debug(JSON.stringify(e));
+			console.log(
+				'Unable to create pull request.  Try running application with NODE_DEBUG=ghpr to troubleshoot'
+			);
+			debug(JSON.stringify(e));
             }
         }
     }
