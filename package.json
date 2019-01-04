@@ -7,6 +7,7 @@
     "url": "https://github.com/CodeSherpas/ghpr/issues"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.2.5",
     "enquirer": "^2.3.0"
   },
   "description": "CLI Tool to Create Pull Requests on GitHub",
@@ -20,7 +21,7 @@
     "git"
   ],
   "license": "ISC",
-  "main": "index.js",
+  "main": "dist/index.js",
   "name": "@codesherpas/ghpr",
   "repository": {
     "type": "git",
@@ -28,11 +29,16 @@
   },
   "scripts": {
     "prettier": "prettier --write index.js src/*.js",
+	"postinstall": "babel src -d dist",
     "test": "echo \"Error: no test specified\"",
     "test:watch": "jest --watchAll"
   },
   "version": "1.0.7",
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.2.3",
+    "@babel/preset-env": "^7.2.3",
     "jest": "^23.6.0",
     "prettier": "^1.15.3"
   }

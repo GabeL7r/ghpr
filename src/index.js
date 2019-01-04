@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
-const shell = require('./src/Shell.js');
+const shell = require('./Shell.js');
 const util = require('util');
-const Github = require('./src/Github.js');
-const Template = require('./src/Template.js');
+const Github = require('./Github.js');
+const Template = require('./Template.js');
 const { prompt, MultiSelect, Select } = require('enquirer');
 
 const debuglog = util.debuglog('ghpr');
@@ -47,7 +47,7 @@ async function main() {
                     return true;
                 },
             };
-        }
+        },
     };
 
     debuglog('Prompting user for title...');
@@ -63,33 +63,33 @@ async function main() {
     debuglog('Head: ', head);
 
     debuglog('Prompting user for labels...');
-    const { selectedLabels } = await new MultiSelect({
+    const selectedLabels = await new MultiSelect({
         message: 'Select Labels: ',
-        name: 'labels',
+        name: 'selectedLabels',
         choices: labels,
     }).run();
-    debuglog('Labels: ', labels);
+    debuglog('Selected Labels: ', selectedLabels);
 
     debuglog('Prompting user template...');
-    const templates = await shell.exec('ls $(git rev-parse --show-toplevel)/.github')
+    const templates = await shell.exec('ls $(git rev-parse --show-toplevel)/.github');
     const { templatePath } = await new Select({
         message: 'Select Template: ',
         name: 'template',
-        choices: templates.split('\n')
-    
+        choices: templates.split('\n'),
     }).run();
     debuglog('Template: ', templatePath);
 
-
     const rootDir = await shell.exec('git rev-parse --show-toplevel');
-    const template = new Template(templatePath, rootDir)
+    const template = new Template(templatePath, rootDir);
 
-    console.log(await template.render())
-    /*
-    debuglog('Beggining render of template...');
-    const body = await renderBody();
-    debuglog('Pull Request Body: ', body);
-    */
+    const body = await template.render();
+
+    const prNumber = await githubClient.createPr({ title, base, head, body });
+    if (selectedLabels.length > 0) {
+        console.log(prNumber)
+        debuglog('Adding labels to Pull Request...');
+        await githubClient.addLabel(prNumber, selectedLabels)
+    }
 }
 
 async function createGithubClient() {

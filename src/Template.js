@@ -1,3 +1,4 @@
+require("@babel/polyfill");
 const fs = require('fs');
 const path = require('path');
 const { prompt, MultiSelect, Select } = require('enquirer');
@@ -12,17 +13,15 @@ class Template {
     }
 
     async _userInput() {
-
         const { userInputs } = this._config;
 
         const keys = Object.keys(userInputs);
         for (let ii = 0; ii < keys.length; ii++) {
-            const question = Object.assign(userInputs[keys[ii]], {type: 'input', name: 'value'})
+            const question = Object.assign(userInputs[keys[ii]], { type: 'input', name: 'value' });
 
-            const {value} = await prompt(question)
+            const { value } = await prompt(question);
 
-            console.log(keys[ii])
-            this._body = this._body.replace(`{{${keys[ii]}}}`, value)
+            this._body = this._body.replace(`{{${keys[ii]}}}`, value);
         }
     }
 
@@ -31,12 +30,11 @@ class Template {
 
         const keys = Object.keys(commands);
         for (let ii = 0; ii < keys.length; ii++) {
-            console.log(commands[keys[ii]])
             try {
                 const value = await shell.exec(commands[keys[ii]]);
-                this._body = this._body.replace(`{{${keys[ii]}}}`, value)
-            }catch(e) {
-                console.error(e)
+                this._body = this._body.replace(`{{${keys[ii]}}}`, value);
+            } catch (e) {
+                console.error(e);
             }
         }
     }

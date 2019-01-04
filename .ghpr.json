@@ -1,11 +1,5 @@
 {
-    "commands": {
-      "testCoverage": "npm test"
-    },
     "userInputs": {
-      "ticketNumber": {
-        "message": "Jira ticket number: "
-      },
       "why": {
         "message": "Why is this change needed: "
       }

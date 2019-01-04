@@ -1,3 +1,4 @@
+require("@babel/polyfill");
 const https = require('https');
 const util = require('util');
 const debug = util.debuglog('github');
@@ -26,34 +27,44 @@ class Github {
         }
     }
 
-    async createPr() {
-        debuglog('Creating pull request...');
+    async createPr({ title, base, head, body }) {
+        debug('Creating pull request', title, base, head, body);
         try {
-            const r = await client.repo(`${owner}/${repoName}`).prAsync({
+            const path = `/repos/${this._owner}/${this._repo}/pulls`;
+            const pr = await this._request('POST', path, {
                 title,
                 base,
                 head,
                 body,
             });
+
+            if (pr.message === 'Validation Failed') {
+                console.log(pr.errors[0].message)
+                process.exit(1)
+            }
+            return pr.number
         } catch (e) {
+            console.log(e)
             if (e.body.errors[0].message.includes('A pull request already exists')) {
                 console.log(`A pull request already exists for ${head} -> ${base} in ${owner}/${repoName}`);
             } else {
                 console.log(
                     'Unable to create pull request.  Try running application with NODE_DEBUG=ghpr to troubleshoot'
                 );
-                debuglog(JSON.stringify(e));
+                debug(JSON.stringify(e));
             }
         }
     }
 
-    async addLabel() {
-        const issueNumber = r[0].number;
-        debuglog(`Pull Request ${issueNumber} created.`);
+    async addLabel(issueNumber, labels) {
+        debug('Adding label to pull request', issueNumber, labels);
+        try {
+            const path = `/repos/${this._owner}/${this._repo}/issues/${issueNumber}/labels`;
+            await this._request('POST', path, labels);
 
-        if (labels.length > 0) {
-            debuglog('Adding labels to Pull Request...');
-            await client.issue(`${owner}/${repoName}`, issueNumber).addLabelsAsync(labels);
+        } catch (e) {
+            debug("Couldn't add labels to pr.", e);
+            return [];
         }
     }
     _request(method, path, postData) {
