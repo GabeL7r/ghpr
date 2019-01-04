@@ -7,11 +7,7 @@
     "url": "https://github.com/CodeSherpas/ghpr/issues"
   },
   "dependencies": {
-    "bluebird": "^3.5.2",
-    "convict": "^4.4.0",
-    "inquirer": "^6.2.0",
-    "octonode": "^0.9.5",
-    "shelljs": "^0.8.2"
+    "enquirer": "^2.3.0"
   },
   "description": "CLI Tool to Create Pull Requests on GitHub",
   "homepage": "https://codesherpas.github.io/ghpr/#/",
@@ -31,7 +27,11 @@
     "url": "https://github.com/CodeSherpas/ghpr"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\""
+    "test": "jest --watchAll"
   },
-  "version": "1.0.7"
+  "version": "1.0.7",
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "prettier": "^1.15.3"
+  }
 }
