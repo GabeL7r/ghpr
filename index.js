@@ -47,7 +47,7 @@ async function main() {
                     return true;
                 },
             };
-        }
+        },
     };
 
     debuglog('Prompting user for title...');
@@ -71,20 +71,18 @@ async function main() {
     debuglog('Labels: ', labels);
 
     debuglog('Prompting user template...');
-    const templates = await shell.exec('ls $(git rev-parse --show-toplevel)/.github')
+    const templates = await shell.exec('ls $(git rev-parse --show-toplevel)/.github');
     const { templatePath } = await new Select({
         message: 'Select Template: ',
         name: 'template',
-        choices: templates.split('\n')
-    
+        choices: templates.split('\n'),
     }).run();
     debuglog('Template: ', templatePath);
 
-
     const rootDir = await shell.exec('git rev-parse --show-toplevel');
-    const template = new Template(templatePath, rootDir)
+    const template = new Template(templatePath, rootDir);
 
-    console.log(await template.render())
+    console.log(await template.render());
     /*
     debuglog('Beggining render of template...');
     const body = await renderBody();

@@ -10,6 +10,10 @@
     "enquirer": "^2.3.0"
   },
   "description": "CLI Tool to Create Pull Requests on GitHub",
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "prettier": "^1.15.3"
+  },
   "homepage": "https://codesherpas.github.io/ghpr/#/",
   "keywords": [
     "github",
@@ -31,9 +35,5 @@
     "test": "echo \"Error: no test specified\"",
     "test:watch": "jest --watchAll"
   },
-  "version": "1.0.7",
-  "devDependencies": {
-    "jest": "^23.6.0",
-    "prettier": "^1.15.3"
-  }
+  "version": "1.0.7"
 }

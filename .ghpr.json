@@ -1,13 +1,13 @@
 {
-    "commands": {
-      "testCoverage": "npm test"
+  "commands": {
+    "testCoverage": "npm test"
+  },
+  "userInputs": {
+    "ticketNumber": {
+      "message": "Jira ticket number: "
     },
-    "userInputs": {
-      "ticketNumber": {
-        "message": "Jira ticket number: "
-      },
-      "why": {
-        "message": "Why is this change needed: "
-      }
+    "why": {
+      "message": "Why is this change needed: "
     }
+  }
 }
