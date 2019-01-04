@@ -26,19 +26,17 @@ Create a configuration file .ghpr.json in the root of your project.
 
 ```json
 {
-	"templateVariables": {
-		"userInputs": {
-			"why": {
-				"message": "Why is this change needed: "
-			},
-			"ticketNumber": {
-				"message": "Jira ticket number: "
-			}
-		},
-		"commands": {
-			"testCoverage": "npm test"
-		}
-	}
+    "userInputs": {
+        "why": {
+            "message": "Why is this change needed: "
+        },
+        "ticketNumber": {
+            "message": "Jira ticket number: "
+        }
+    },
+    "commands": {
+        "testCoverage": "npm test"
+    }
 }
 ```
 
