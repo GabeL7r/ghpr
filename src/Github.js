@@ -40,9 +40,13 @@ class Github {
             });
 
             if (pr.message === 'Validation Failed') {
-                console.log(pr.errors[0].message);
+                if(pr.errors[0].field === 'head' && pr.errors[0].code === 'invalid')
+                    console.log('Please push branch to GitHub and try again.')
+                else
+                    console.log(pr.errors[0].message);
                 process.exit(1);
             }
+            console.log('Link for PR: ', pr.url)
             return pr.number;
         } catch (e) {
             console.log(e);

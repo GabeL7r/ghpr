@@ -3,6 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const { prompt, MultiSelect, Select } = require('enquirer');
 const shell = require('./Shell.js');
+const util = require('util');
+const debug = util.debuglog('template');
 
 class Template {
     constructor(filePath, rootDir) {
@@ -35,7 +37,9 @@ class Template {
         const keys = Object.keys(commands);
         for (let ii = 0; ii < keys.length; ii++) {
             try {
+                debug('Running command: ', commands[keys[ii]])
                 const value = await shell.exec(commands[keys[ii]]);
+                debug('Result: ', value)
                 this._body = this._body.replace(`{{${keys[ii]}}}`, value);
             } catch (e) {
                 console.error(e);
