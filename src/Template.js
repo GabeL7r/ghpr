@@ -37,9 +37,9 @@ class Template {
         const keys = Object.keys(commands);
         for (let ii = 0; ii < keys.length; ii++) {
             try {
-                debug('Running command: ', commands[keys[ii]])
+                debug('Running command: ', commands[keys[ii]]);
                 const value = await shell.exec(commands[keys[ii]]);
-                debug('Result: ', value)
+                debug('Result: ', value);
                 this._body = this._body.replace(`{{${keys[ii]}}}`, value);
             } catch (e) {
                 console.error(e);

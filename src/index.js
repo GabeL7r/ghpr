@@ -89,7 +89,7 @@ class GHPR {
             choices: templates.split('\n'),
         }).run();
         debuglog('Template: ', templatePath);
-        this._templatePath = templatePath
+        this._templatePath = templatePath;
     }
 
     async _getLabels() {
@@ -127,8 +127,8 @@ class GHPR {
             this._rootDir = await shell.exec('git rev-parse --show-toplevel');
             this._template = new Template(this._templatePath, this._rootDir);
             this._body = await this._template.render();
-        } catch(e) {
-            debuglog(e)
+        } catch (e) {
+            debuglog(e);
             const { body } = await prompt({
                 type: 'input',
                 name: 'body',
