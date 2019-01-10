@@ -14,9 +14,9 @@ class GHPR {
         this.owner = owner;
         this.repo = repo;
         try {
-            this.config = require(`${this.rootDir}/.ghpr.json`)
-        } catch(e) {
-            this.config = {}
+            this.config = require(`${this.rootDir}/.ghpr.json`);
+        } catch (e) {
+            this.config = {};
         }
     }
 
@@ -28,8 +28,8 @@ class GHPR {
 
     async _getGithubLabels() {
         const { owner, repo } = this;
-        const result = await this._githubClient.issues.listLabelsForRepo({owner, repo});
-        this.labels = result.data.map(l => l.name)
+        const result = await this._githubClient.issues.listLabelsForRepo({ owner, repo });
+        this.labels = result.data.map(l => l.name);
     }
 
     async _promptUserForInfo() {
@@ -37,7 +37,7 @@ class GHPR {
     }
 
     createQuestionList() {
-         const questions = [
+        const questions = [
             {
                 type: 'input',
                 name: 'title',
@@ -74,58 +74,58 @@ class GHPR {
                 name: 'selectedLabels',
                 choices: this.labels,
             },
-        ]
+        ];
 
         try {
-            const templates = shell.exec('ls $(git rev-parse --show-toplevel)/.github').stdout.trim()
+            const templates = shell.exec('ls $(git rev-parse --show-toplevel)/.github').stdout.trim();
             questions.push({
-                    type: 'list',
-                    message: 'Select Template: ',
-                    name: 'templatePath',
-                    choices: templates.split('\n'),
-            })
+                type: 'list',
+                message: 'Select Template: ',
+                name: 'templatePath',
+                choices: templates.split('\n'),
+            });
 
-            if(this.config.userInputs) {
-                Object.keys(this.config.userInputs).forEach( k => {
-                    questions.push(Object.assign({type: 'input', name: k}, this.config.userInputs[k]))
-                })
+            if (this.config.userInputs) {
+                Object.keys(this.config.userInputs).forEach(k => {
+                    questions.push(Object.assign({ type: 'input', name: k }, this.config.userInputs[k]));
+                });
             }
-        } catch(e) {
+        } catch (e) {
             questions.push({
                 type: 'input',
                 name: 'body',
                 message: 'Pull Request Body: ',
-            }) 
+            });
         }
 
-        return questions
+        return questions;
     }
     async _createBody() {
         try {
             const templateBody = fs.readFileSync(`${this.rootDir}/.github/${this.answers.templatePath}`, 'utf8');
-            this.body = mustache.render(templateBody, this.createViewForTemplateRender())
-        } catch(e) {
-            debuglog(e)
+            this.body = mustache.render(templateBody, this.createViewForTemplateRender());
+        } catch (e) {
+            debuglog(e);
         }
     }
 
     createViewForTemplateRender() {
-        const result = {}
+        const result = {};
         Object.keys(this.config.userInputs).forEach(k => {
-            result[k] = this.answers[k]
-        })
+            result[k] = this.answers[k];
+        });
 
         try {
             Object.keys(this.config.commands).forEach(k => {
                 result[k] = () => {
-                    console.log('Running command: ', this.config.commands[k])
-                    const result = shell.exec(this.config.commands[k])
+                    console.log('Running command: ', this.config.commands[k]);
+                    const result = shell.exec(this.config.commands[k]);
 
-                    return (result.stdout || result.stderr).trim()
-                }
-            })
-        } catch(e) {
-            debuglog(e)
+                    return (result.stdout || result.stderr).trim();
+                };
+            });
+        } catch (e) {
+            debuglog(e);
         }
 
         return result;
@@ -136,17 +136,17 @@ class GHPR {
         const { body, owner, repo } = this;
 
         try {
-            console.log('Creating pull request...')
+            console.log('Creating pull request...');
             const response = await this._githubClient.pulls.create({ owner, repo, title, base, head, body });
 
-            console.log('Pull Request Link: ', response.data.url)
+            console.log('Pull Request Link: ', response.data.url);
 
-            this.prNumber = response.data.number
-        } catch(e) {
-            console.log('There was an error creating your pull request.')
-            console.log('Verify head branch is pushed to github.')
-            console.log('Or run with NODE_DEBUG=ghpr to troubleshoot')
-            process.exit(1)
+            this.prNumber = response.data.number;
+        } catch (e) {
+            console.log('There was an error creating your pull request.');
+            console.log('Verify head branch is pushed to github.');
+            console.log('Or run with NODE_DEBUG=ghpr to troubleshoot');
+            process.exit(1);
         }
     }
 
@@ -155,11 +155,9 @@ class GHPR {
             debuglog('Adding labels to Pull Request...');
             const { body, owner, repo, prNumber: number } = this;
             const { selectedLabels: labels } = this.answers;
-            await this._githubClient.issues.addLabels({owner, repo, number, labels})
+            await this._githubClient.issues.addLabels({ owner, repo, number, labels });
         }
     }
-  
 }
-
 
 module.exports = GHPR;
