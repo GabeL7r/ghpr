@@ -1,19 +1,30 @@
 {
   "author": "Gabe Levasseur <gabe@codesherpas.io> (https://codesherpas.io/#/)",
   "bin": {
-    "ghpr": "./index.js"
+    "ghpr": "./dist/index.js"
   },
   "bugs": {
     "url": "https://github.com/CodeSherpas/ghpr/issues"
   },
   "dependencies": {
-    "bluebird": "^3.5.2",
-    "convict": "^4.4.0",
-    "inquirer": "^6.2.0",
-    "octonode": "^0.9.5",
-    "shelljs": "^0.8.2"
+    "@babel/polyfill": "^7.2.5",
+    "@octokit/rest": "^16.7.0",
+    "git-branch": "^2.0.1",
+    "git-repo-name": "^1.0.1",
+    "git-username": "^1.0.0",
+    "inquirer": "^6.2.1",
+    "mustache": "^3.0.1",
+    "shelljs": "^0.8.3"
   },
   "description": "CLI Tool to Create Pull Requests on GitHub",
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.2.3",
+    "@babel/preset-env": "^7.2.3",
+    "jest": "^23.6.0",
+    "prettier": "^1.15.3"
+  },
   "homepage": "https://codesherpas.github.io/ghpr/#/",
   "keywords": [
     "github",
@@ -24,14 +35,19 @@
     "git"
   ],
   "license": "ISC",
-  "main": "index.js",
+  "main": "dist/index.js",
   "name": "@codesherpas/ghpr",
   "repository": {
     "type": "git",
     "url": "https://github.com/CodeSherpas/ghpr"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\""
+    "build": "babel src -d dist",
+    "postinstall": "npm run build",
+    "prettier": "prettier --write index.js src/*.js",
+    "test": "jest",
+    "test:cover": "jest --coverage",
+    "test:watch": "jest --watchAll"
   },
   "version": "1.0.7"
 }
