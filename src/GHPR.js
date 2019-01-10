@@ -10,7 +10,7 @@ shell.config.silent = process.env.NODE_DEBUG === 'ghpr';
 class GHPR {
     constructor(githubClient, owner, repo) {
         this.rootDir = shell.exec('git rev-parse --show-toplevel').stdout.trim();
-        this._githubClient = githubClient;
+        this.githubClient = githubClient;
         this.owner = owner;
         this.repo = repo;
         try {
@@ -21,18 +21,18 @@ class GHPR {
     }
 
     async build() {
-        await this._getGithubLabels();
-        await this._promptUserForInfo();
-        await this._createBody();
+        await this.getGithubLabels();
+        await this.promptUserForInfo();
+        await this.createBody();
     }
 
-    async _getGithubLabels() {
+    async getGithubLabels() {
         const { owner, repo } = this;
-        const result = await this._githubClient.issues.listLabelsForRepo({owner, repo});
+        const result = await this.githubClient.issues.listLabelsForRepo({owner, repo});
         this.labels = result.data.map(l => l.name)
     }
 
-    async _promptUserForInfo() {
+    async promptUserForInfo() {
         this.answers = await prompt(this.createQuestionList());
     }
 
@@ -100,7 +100,7 @@ class GHPR {
 
         return questions
     }
-    async _createBody() {
+    async createBody() {
         try {
             const templateBody = fs.readFileSync(`${this.rootDir}/.github/${this.answers.templatePath}`, 'utf8');
             this.body = mustache.render(templateBody, this.createViewForTemplateRender())
@@ -137,7 +137,7 @@ class GHPR {
 
         try {
             console.log('Creating pull request...')
-            const response = await this._githubClient.pulls.create({ owner, repo, title, base, head, body });
+            const response = await this.githubClient.pulls.create({ owner, repo, title, base, head, body });
 
             console.log('Pull Request Link: ', response.data.url)
 
@@ -155,7 +155,7 @@ class GHPR {
             debuglog('Adding labels to Pull Request...');
             const { body, owner, repo, prNumber: number } = this;
             const { selectedLabels: labels } = this.answers;
-            await this._githubClient.issues.addLabels({owner, repo, number, labels})
+            await this.githubClient.issues.addLabels({owner, repo, number, labels})
         }
     }
   
