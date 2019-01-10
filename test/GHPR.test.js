@@ -1,4 +1,3 @@
 const ghpr = require('../src/GHPR.js');
 
-describe('GHPR', () => {
-});
+describe('GHPR', () => {});
