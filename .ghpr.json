@@ -1,7 +1,7 @@
 {
   "commands": {
 	"testCoverage":"npm run test:cover",
-    "complexity": "cr -f markdown src"
+    "complexity": "cr -f markdown -s mostComplex src"
   },
   "userInputs": {
     "why": {

@@ -3,7 +3,7 @@
 {{why}}
 
 ## Test Coverage
-{{testCoverage}}
+{{{testCoverage}}}
 
 ## Complexity
-{{complexity}}
+{{{complexity}}}
