@@ -28,8 +28,8 @@ class GHPR {
 
     async getGithubLabels() {
         const { owner, repo } = this;
-        const result = await this.githubClient.issues.listLabelsForRepo({owner, repo});
-        this.labels = result.data.map(l => l.name)
+        const result = await this.githubClient.issues.listLabelsForRepo({ owner, repo });
+        this.labels = result.data.map(l => l.name);
     }
 
     async promptUserForInfo() {
@@ -136,7 +136,7 @@ class GHPR {
         const { body, owner, repo } = this;
 
         try {
-            console.log('Creating pull request...')
+            console.log('Creating pull request...');
             const response = await this.githubClient.pulls.create({ owner, repo, title, base, head, body });
 
             console.log('Pull Request Link: ', response.data.url);
@@ -155,7 +155,7 @@ class GHPR {
             debuglog('Adding labels to Pull Request...');
             const { body, owner, repo, prNumber: number } = this;
             const { selectedLabels: labels } = this.answers;
-            await this.githubClient.issues.addLabels({owner, repo, number, labels})
+            await this.githubClient.issues.addLabels({ owner, repo, number, labels });
         }
     }
 }
