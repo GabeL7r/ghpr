@@ -3,9 +3,9 @@
 require('@babel/polyfill');
 
 const repoName = require('git-repo-name');
-const username = require('git-username')
+const username = require('git-username');
 const shell = require('shelljs');
-const octokit = require('@octokit/rest')()
+const octokit = require('@octokit/rest')();
 const GHPR = require('./GHPR.js');
 const Template = require('./Template.js');
 
@@ -15,7 +15,7 @@ const debuglog = util.debuglog('ghpr');
 main();
 
 async function main() {
-	const { owner, repo } = getGitInfo();
+    const { owner, repo } = getGitInfo();
     await authGitClient();
 
     const ghpr = new GHPR(octokit, owner, repo);
@@ -26,19 +26,19 @@ async function main() {
 }
 
 function getGitInfo() {
-	try {
-		const owner = username();
-		const repo = repoName.sync();
-		return { owner, repo }
-	} catch(e) {
+    try {
+        const owner = username();
+        const repo = repoName.sync();
+        return { owner, repo };
+    } catch (e) {
         console.error('Ensure you are in a git project with an origin.');
-		process.exit(1)
-	}
+        process.exit(1);
+    }
 }
 
 async function authGitClient() {
     debuglog('Getting GitHub Token...');
-    const token = process.env.GITHUB_TOKEN || await shell.exec('git config --get github.token').stdout.trim();
+    const token = process.env.GITHUB_TOKEN || (await shell.exec('git config --get github.token').stdout.trim());
 
     if (!token) {
         console.error(
@@ -49,9 +49,8 @@ async function authGitClient() {
         process.exit(1);
     }
 
-	octokit.authenticate({
-		type: 'oauth',
-		token
-	})
+    octokit.authenticate({
+        type: 'oauth',
+        token,
+    });
 }
-
