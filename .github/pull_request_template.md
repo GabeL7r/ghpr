@@ -4,6 +4,3 @@
 
 ## Test Coverage
 {{{testCoverage}}}
-
-## Complexity
-{{{complexity}}}

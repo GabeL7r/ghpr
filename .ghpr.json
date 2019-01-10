@@ -1,6 +1,5 @@
 {
   "commands": {
-    "complexity": "cr -f markdown -s mostComplex src",
     "testCoverage": "npm run test:cover"
   },
   "userInputs": {
