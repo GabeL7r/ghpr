@@ -7,7 +7,6 @@ const username = require('git-username')
 const shell = require('shelljs');
 const octokit = require('@octokit/rest')()
 const GHPR = require('./GHPR.js');
-const Template = require('./Template.js');
 
 const util = require('util');
 const debuglog = util.debuglog('ghpr');
@@ -21,7 +20,7 @@ async function main() {
     const ghpr = new GHPR(octokit, owner, repo);
 
     await ghpr.build();
-    await ghpr.create();
+    await ghpr.createPullRequest();
     await ghpr.addLabels();
 }
 

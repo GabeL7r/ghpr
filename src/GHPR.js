@@ -26,19 +26,14 @@ class GHPR {
         await this._createBody();
     }
 
-    async create() {
-        const { title, base, head, body, owner, repo } = this;
-
-        const response = await this._githubClient.pulls.create({ owner, repo, title, base, head, body });
-
-        console.log(response)
+    async _getGithubLabels() {
+        const { owner, repo } = this;
+        const result = await this._githubClient.issues.listLabelsForRepo({owner, repo});
+        this.labels = result.data.map(l => l.name)
     }
 
-    async addLabels() {
-        if (this.answers.selectedLabels.length > 0) {
-            debuglog('Adding labels to Pull Request...');
-            await this._githubClient.addLabel(this.prNumber, this.selectedLabels);
-        }
+    async _promptUserForInfo() {
+        this.answers = await prompt(this.createQuestionList());
     }
 
     createQuestionList() {
@@ -105,17 +100,6 @@ class GHPR {
 
         return questions
     }
-   
-    async _promptUserForInfo() {
-        this.answers = await prompt(this.createQuestionList());
-    }
-
-    async _getGithubLabels() {
-        const { owner, repo } = this;
-        const result = await this._githubClient.issues.listLabelsForRepo({owner, repo});
-        this.labels = result.data.map(l => l.name)
-    }
-
     async _createBody() {
         try {
             const templateBody = fs.readFileSync(`${this.rootDir}/.github/${this.answers.templatePath}`, 'utf8');
@@ -134,6 +118,7 @@ class GHPR {
         try {
             Object.keys(this.config.commands).forEach(k => {
                 result[k] = () => {
+                    console.log('Running command: ', this.config.commands[k])
                     const result = shell.exec(this.config.commands[k])
 
                     return (result.stdout || result.stderr).trim()
@@ -145,6 +130,35 @@ class GHPR {
 
         return result;
     }
+
+    async createPullRequest() {
+        const { title, base, head } = this.answers;
+        const { body, owner, repo } = this;
+
+        try {
+            console.log('Creating pull request...')
+            const response = await this._githubClient.pulls.create({ owner, repo, title, base, head, body });
+
+            console.log('Pull Request Link: ', response.data.url)
+
+            this.prNumber = response.data.number
+        } catch(e) {
+            console.log('There was an error creating your pull request.')
+            console.log('Verify head branch is pushed to github.')
+            console.log('Or run with NODE_DEBUG=ghpr to troubleshoot')
+            process.exit(1)
+        }
+    }
+
+    async addLabels() {
+        if (this.answers.selectedLabels.length > 0) {
+            debuglog('Adding labels to Pull Request...');
+            const { body, owner, repo, prNumber: number } = this;
+            const { selectedLabels: labels } = this.answers;
+            await this._githubClient.issues.addLabels({owner, repo, number, labels})
+        }
+    }
+  
 }
 
 
