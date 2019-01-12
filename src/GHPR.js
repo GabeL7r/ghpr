@@ -28,8 +28,13 @@ class GHPR {
 
     async getGithubLabels() {
         const { owner, repo } = this;
-        const result = await this.githubClient.issues.listLabelsForRepo({ owner, repo });
-        this.labels = result.data.map(l => l.name);
+        try {
+            const result = await this.githubClient.issues.listLabelsForRepo({ owner, repo });
+            this.labels = result.data.map(l => l.name);
+        } catch(e) {
+            debuglog(e)
+            this.labels = []
+        }
     }
 
     async promptUserForInfo() {
