@@ -1,6 +1,8 @@
 const GHPR = require('../src/GHPR.js');
 const Octokit = require('@octokit/rest');
+const inquirer = require('inquirer');
 
+jest.mock('inquirer');
 jest.mock('@octokit/rest');
 const octokit = new Octokit();
 octokit.issues = {}
@@ -31,6 +33,30 @@ describe('GHPR', () => {
             
             await ghpr.getGithubLabels();
             expect(ghpr.labels).toEqual(expect.arrayContaining([]))
+        })
+    
+    })
+
+    describe('promptUserForInfo', () => {
+        it('sets answers correctly', async () => {
+            const answers = {title: 'test title', base: 'master', head: 'test', labels: [] }
+            inquirer.prompt.mockResolvedValue(answers);
+        
+            await ghpr.promptUserForInfo()
+
+            expect(ghpr.answers).toEqual(answers)
+        })
+
+        it('exits program if there is an error with prompt', async () => {
+            const realProcess = process;
+            const exitMock = jest.fn();
+            global.process = { ...realProcess, exit: exitMock };
+
+            inquirer.prompt.mockRejectedValue(new Error('Something went wrong'));
+
+            await ghpr.promptUserForInfo();
+            expect(exitMock).toHaveBeenCalledWith(1)
+        
         })
     
     })

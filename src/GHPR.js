@@ -38,7 +38,13 @@ class GHPR {
     }
 
     async promptUserForInfo() {
-        this.answers = await prompt(this.createQuestionList());
+        try {
+            this.answers = await prompt(this.createQuestionList());
+        } catch(e) {
+            console.log('here')
+            debuglog(e)
+            process.exit(1)
+        }
     }
 
     createQuestionList() {
