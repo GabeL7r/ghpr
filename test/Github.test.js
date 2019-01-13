@@ -27,8 +27,8 @@ describe('Github', () => {
             repoName.sync = jest.fn().mockImplementation( () => {throw new Error()})
 
             const github = new Github();
-            expect(exitMock).toHaveBeenCalledWith(1)
 
+            expect(exitMock).toHaveBeenCalledWith(1)
             global.process = {...realProcess}
             repoName.sync = backup;
         })
@@ -88,6 +88,30 @@ describe('Github', () => {
         })
     
     })
+ 
+    describe('createPullRequest', () => {
+
+        it('creates pull request', async () => {
+            const github = new Github();
+            await github.createPullRequest({title: 'test', base: 'master', head: 'test', body: 'test'});
+            expect(github.prNumber).toEqual(42)
+        })
+
+        it('exits if pull request could not be made', async () => {
+            const realProcess = process;
+            const exitMock = jest.fn();
+            global.process = { ...realProcess, exit: exitMock };
+
+            const github = new Github();
+            await github.createPullRequest({title: 'test', base: null, head: 'test', body: 'test'});
+
+            expect(exitMock).toHaveBeenCalledWith(1)
+            global.process = {...realProcess}
+        })
+
+
+    })
+
 
 
 });

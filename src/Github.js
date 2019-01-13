@@ -50,13 +50,12 @@ class Github {
         }
     }
 
-    async createPullRequest() {
-        const { title, base, head } = this.answers;
-        const { body, owner, repo } = this;
+    async createPullRequest( {title, base, head, body} ) {
+        const { owner, repo } = this;
 
         try {
             console.log('Creating pull request...');
-            const response = await this.githubClient.pulls.create({ owner, repo, title, base, head, body });
+            const response = await this.client.pulls.create({ owner, repo, title, base, head, body });
 
             console.log('Pull Request Link: ', response.data.url);
 
