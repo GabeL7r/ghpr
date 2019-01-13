@@ -45,7 +45,9 @@ class Github {
             const result = await this.client.issues.listLabelsForRepo({ owner, repo });
             this.labels = result.data.map(l => l.name);
         } catch(e) {
+            /* istanbul ignore next */
             debuglog(e)
+            /* istanbul ignore next */
             this.labels = []
         }
     }
@@ -68,12 +70,16 @@ class Github {
         }
     }
 
-    async addLabels() {
-        if (this.answers.selectedLabels.length > 0) {
+    async addLabels({number, labels}) {
+        try {
             debuglog('Adding labels to Pull Request...');
-            const { body, owner, repo, prNumber: number } = this;
-            const { selectedLabels: labels } = this.answers;
-            await this.githubClient.issues.addLabels({ owner, repo, number, labels });
+            const { owner, repo } = this;
+            await this.client.issues.addLabels({ owner, repo, number, labels });
+        } catch(e) {
+            console.log(e)
+            console.log('Could not add labels to pull request')
+            debuglog(e)
+            process.exit(1)
         }
     }
 

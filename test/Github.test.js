@@ -112,6 +112,38 @@ describe('Github', () => {
 
     })
 
+    describe('rootDir', () => {
+        it('can be called static', () => {
+            expect(Github.rootDir()).toEqual(expect.stringContaining('ghpr'))
+        })
+    })
+
+    describe('addLabels', () => {
+        const realProcess = process;
+        const exitMock = jest.fn();
+
+        beforeAll( () => {
+            global.process = { ...realProcess, exit: exitMock };
+        })
+
+        afterAll( () => {
+            global.process = {...realProcess}
+        })
+
+        it('does not exit if labels added successfully', async () => {
+            const github = new Github();
+            await github.addLabels({number: 42, labels: ['wip']});
+            expect(exitMock).not.toHaveBeenCalledWith(0)
+        })
+
+        it('exits if labels could not be added', async () => {
+            const github = new Github();
+            await github.addLabels({labels: ['wip']});
+
+            expect(exitMock).toHaveBeenCalledWith(1)
+        })
+    })
+
 
 
 });

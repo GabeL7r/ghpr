@@ -4,6 +4,13 @@ const Octokit = function() {
     this.issues = {}
     this.issues.listLabelsForRepo = jest.fn()
         .mockResolvedValue({data: [{name: 'bug'}, {name: 'wip'}]})
+ 
+    this.issues.addLabels = jest.fn()
+        .mockImplementation( ({number, labels}) => {
+            if (!number || !labels) return Promise.reject(new Error())
+
+            else return Promise.resolve('worked')
+        })
         
     this.pulls = {}
     this.pulls.create = jest.fn()
