@@ -64,9 +64,9 @@ describe('Github', () => {
 
         it('sets labels when successful', async () => {
             const github = new Github();
-            await github.getGithubLabels();
+            
 
-            expect(github.labels).toEqual(expect.arrayContaining(['bug', 'wip']))
+            expect(await github.getGithubLabels()).toEqual(expect.arrayContaining(['bug', 'wip']))
 
         })
 
