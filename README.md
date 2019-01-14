@@ -43,7 +43,6 @@ Create a configuration file .ghpr.json in the root of your project.
 Add a Pull Request Template file named .github/pull_request_template.md.
 
 ```
-## Link to Jira
 ## Why
 <!-- describe why this change is needed -->
 <%= why %>
