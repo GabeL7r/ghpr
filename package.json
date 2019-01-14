@@ -14,7 +14,6 @@
     "git-repo-name": "^1.0.1",
     "git-username": "^1.0.0",
     "inquirer": "^6.2.1",
-    "mustache": "^3.0.1",
     "shelljs": "^0.8.3"
   },
   "description": "CLI Tool to Create Pull Requests on GitHub",

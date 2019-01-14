@@ -44,15 +44,13 @@ Add a Pull Request Template file named .github/pull_request_template.md.
 
 ```
 ## Link to Jira
-https://codesherpas7.atlassian.net/browse/{{ticketNumber}}
-
 ## Why
 <!-- describe why this change is needed -->
-{{why}}
+<%= why %>
 
-## Test Coverage Results
-<!-- include results of test coverage -->
-{{testCoverage}}
+## Test Coverage
+<%= testCoverage.split('\n').slice(4).map(l => `|${l}`).slice(0, -1).join('\n') %>
+https://codesherpas7.atlassian.net/browse/{{ticketNumber}}
 ```
 
 Create a pull request.
@@ -60,4 +58,6 @@ Create a pull request.
 ```shell
 ghpr
 ```
+
+> Note: templates are rendered using ejs
 
