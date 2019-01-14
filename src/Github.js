@@ -6,7 +6,7 @@ const shell = require('shelljs');
 const repoName = require('git-repo-name');
 const username = require('git-username');
 
-shell.config.silent = process.env.NODE_DEBUG === 'ghpr';
+shell.config.silent = true;
 
 class Github {
     constructor() {
@@ -62,7 +62,7 @@ class Github {
             console.log('Creating pull request...');
             const response = await this.client.pulls.create({ owner, repo, title, base, head, body });
 
-            console.log('Pull Request Link: ', response.data.url);
+            console.log('Pull Request Link: ', response.data.html_url);
 
             this.prNumber = response.data.number;
         } catch (e) {

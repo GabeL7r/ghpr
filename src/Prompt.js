@@ -1,3 +1,4 @@
+require('@babel/polyfill');
 const util = require('util');
 const debuglog = util.debuglog('ghpr');
 const branch = require('git-branch');

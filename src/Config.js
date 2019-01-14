@@ -1,3 +1,4 @@
+require('@babel/polyfill');
 const Github = require('./Github.js');
 
 class Config {
