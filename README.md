@@ -49,8 +49,7 @@ Add a Pull Request Template file named .github/pull_request_template.md.
 <%= why %>
 
 ## Test Coverage
-<%= testCoverage.split('\n').slice(4).map(l => `|${l}`).slice(0, -1).join('\n') %>
-https://codesherpas7.atlassian.net/browse/{{ticketNumber}}
+<%= testCoverage %>
 ```
 
 Create a pull request.
