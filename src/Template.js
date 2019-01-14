@@ -14,10 +14,13 @@ class Template {
 
     static get paths() {
         try {
-            const result = shell.exec('ls $(git rev-parse --show-toplevel)/.github').stdout.trim().split('\n')
-            return result
-        } catch(e) {
-            return []
+            const result = shell
+                .exec('ls $(git rev-parse --show-toplevel)/.github')
+                .stdout.trim()
+                .split('\n');
+            return result;
+        } catch (e) {
+            return [];
         }
     }
 
@@ -32,13 +35,13 @@ class Template {
     }
 
     async getUserInputs() {
-        const choices = Template.paths
-        const { path }  = await Prompt.user({
-                type: 'list',
-                message: 'Select Template: ',
-                name: 'path',
-                choices
-            })
+        const choices = Template.paths;
+        const { path } = await Prompt.user({
+            type: 'list',
+            message: 'Select Template: ',
+            name: 'path',
+            choices,
+        });
 
         this.path = path;
 
@@ -57,28 +60,28 @@ class Template {
             });
         }
 
-        this.values = Object.assign({}, this.values, await Prompt.user(questions))
+        this.values = Object.assign({}, this.values, await Prompt.user(questions));
 
         return this.values;
     }
 
     runCommands() {
-        let result = {}
+        let result = {};
         Object.keys(this.config.commands).forEach(k => {
             try {
                 const output = shell.exec(this.config.commands[k]);
                 result[k] = (output.stdout || output.stderr).trim();
             } catch (e) {
                 debuglog(e);
-                console.log('Could not execute command: ', this.config.commands[k])
-                result[k] = null
+                console.log('Could not execute command: ', this.config.commands[k]);
+                result[k] = null;
             }
         });
 
-        this.values = Object.assign({}, this.values, result)
+        this.values = Object.assign({}, this.values, result);
 
-        return this.values
+        return this.values;
     }
 }
 
-module.exports = Template
+module.exports = Template;
