@@ -9,6 +9,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
     "@octokit/rest": "^16.7.0",
+    "ejs": "^2.6.1",
     "git-branch": "^2.0.1",
     "git-repo-name": "^1.0.1",
     "git-username": "^1.0.0",
