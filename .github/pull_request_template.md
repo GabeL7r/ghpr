@@ -1,6 +1,6 @@
 ## Why
 <!-- describe why this change is needed -->
-{{why}}
+<%= why %>
 
 ## Test Coverage
-{{{testCoverage}}}
+<%= testCoverage %>

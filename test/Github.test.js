@@ -1,5 +1,4 @@
 const Github = require('../src/Github.js');
-const Config = require('../src/Config.js');
 const testConfig = require('../.ghpr.json');
 let repoName = require('git-repo-name');
 const shell = require('shelljs');

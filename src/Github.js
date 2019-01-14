@@ -1,9 +1,12 @@
+require('@babel/polyfill');
 const util = require('util');
 const debuglog = util.debuglog('ghpr');
 const octokit = require('@octokit/rest')();
 const shell = require('shelljs');
 const repoName = require('git-repo-name');
 const username = require('git-username');
+
+shell.config.silent = process.env.NODE_DEBUG === 'ghpr';
 
 class Github {
     constructor() {
@@ -43,12 +46,12 @@ class Github {
         const { owner, repo } = this;
         try {
             const result = await this.client.issues.listLabelsForRepo({ owner, repo });
-            this.labels = result.data.map(l => l.name);
+           return result.data.map(l => l.name);
         } catch(e) {
             /* istanbul ignore next */
             debuglog(e)
             /* istanbul ignore next */
-            this.labels = []
+            return []
         }
     }
 
@@ -76,7 +79,6 @@ class Github {
             const { owner, repo } = this;
             await this.client.issues.addLabels({ owner, repo, number, labels });
         } catch(e) {
-            console.log(e)
             console.log('Could not add labels to pull request')
             debuglog(e)
             process.exit(1)

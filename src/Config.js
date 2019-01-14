@@ -1,20 +1,15 @@
 const Github = require('./Github.js');
 
-const CONFIG = Symbol();
-
 class Config {
-    constructor() {
+    static get get() {
         this.rootDir = Github.rootDir();
 
         try {
-            this[CONFIG] = require(`${this.rootDir}/.ghpr.json`);
+            return require(`${this.rootDir}/.ghpr.json`);
         } catch (e) {
-            this[CONFIG] = {};
+            return {};
         }
-    }
 
-    get config() {
-        return this[CONFIG];
     }
 }
 
