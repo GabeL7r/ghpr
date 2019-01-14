@@ -15,11 +15,11 @@ class Github {
             this.repo = repoName.sync();
         } catch (e) {
             console.error('Ensure you are in a git project with an origin.');
-            process.exit(1)
+            process.exit(1);
         }
 
         debuglog('Getting GitHub Token...');
-        this.token = process.env.GITHUB_TOKEN || (shell.exec('git config --get github.token').stdout.trim());
+        this.token = process.env.GITHUB_TOKEN || shell.exec('git config --get github.token').stdout.trim();
 
         if (!this.token) {
             console.error(
@@ -32,7 +32,7 @@ class Github {
 
         octokit.authenticate({
             type: 'oauth',
-            token: this.token
+            token: this.token,
         });
 
         this.client = octokit;
@@ -46,16 +46,16 @@ class Github {
         const { owner, repo } = this;
         try {
             const result = await this.client.issues.listLabelsForRepo({ owner, repo });
-           return result.data.map(l => l.name);
-        } catch(e) {
+            return result.data.map(l => l.name);
+        } catch (e) {
             /* istanbul ignore next */
-            debuglog(e)
+            debuglog(e);
             /* istanbul ignore next */
-            return []
+            return [];
         }
     }
 
-    async createPullRequest( {title, base, head, body} ) {
+    async createPullRequest({ title, base, head, body }) {
         const { owner, repo } = this;
 
         try {
@@ -73,18 +73,17 @@ class Github {
         }
     }
 
-    async addLabels({number, labels}) {
+    async addLabels({ number, labels }) {
         try {
             debuglog('Adding labels to Pull Request...');
             const { owner, repo } = this;
             await this.client.issues.addLabels({ owner, repo, number, labels });
-        } catch(e) {
-            console.log('Could not add labels to pull request')
-            debuglog(e)
-            process.exit(1)
+        } catch (e) {
+            console.log('Could not add labels to pull request');
+            debuglog(e);
+            process.exit(1);
         }
     }
-
 }
 
 module.exports = Github;

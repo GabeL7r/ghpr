@@ -10,7 +10,6 @@ class Config {
         } catch (e) {
             return {};
         }
-
     }
 }
 

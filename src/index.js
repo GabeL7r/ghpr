@@ -17,13 +17,13 @@ async function main() {
 
     const labels = await github.getGithubLabels();
 
-    const {title, base, head, selectedLabels } = await Prompt.user(Prompt.pullRequestQuestions(labels))
+    const { title, base, head, selectedLabels } = await Prompt.user(Prompt.pullRequestQuestions(labels));
 
-    const template = new Template(Github.rootDir(), Config.get)
+    const template = new Template(Github.rootDir(), Config.get);
     await template.getUserInputs();
     template.runCommands();
 
     const body = template.body;
 
-    await github.createPullRequest({title, base, head, body, labels: selectedLabels});
+    await github.createPullRequest({ title, base, head, body, labels: selectedLabels });
 }

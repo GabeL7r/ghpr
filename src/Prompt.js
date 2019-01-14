@@ -5,15 +5,14 @@ const branch = require('git-branch');
 const shell = require('shelljs');
 const { prompt } = require('inquirer');
 
-
 class Prompt {
     static async user(questions) {
         try {
             return await prompt(questions);
-        } catch(e) {
-            debuglog(e)
-            console.log('Error prompting user for input')
-            process.exit(1)
+        } catch (e) {
+            debuglog(e);
+            console.log('Error prompting user for input');
+            process.exit(1);
         }
     }
 
