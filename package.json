@@ -48,5 +48,5 @@
     "test:cover": "jest --coverage",
     "test:watch": "jest --watchAll"
   },
-  "version": "1.1.3"
+  "version": "1.1.4"
 }
