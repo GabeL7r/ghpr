@@ -43,7 +43,6 @@
   },
   "scripts": {
     "build": "babel src -d dist",
-    "postinstall": "npm run build",
     "prettier": "prettier --write index.js src/*.js",
     "test": "jest",
     "test:cover": "jest --coverage",
